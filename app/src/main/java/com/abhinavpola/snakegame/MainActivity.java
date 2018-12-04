@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 public class MainActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount account;
+    public static GoogleSignInAccount account;
     final int RC_SIGN_IN = 1;
 
     @Override
