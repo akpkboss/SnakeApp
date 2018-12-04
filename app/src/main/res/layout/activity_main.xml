@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1d1d1d"
     tools:context=".MainActivity">
 
     <Button
@@ -13,6 +14,7 @@
         android:onClick="signIn"
         android:text="Sign in"
         android:typeface="monospace"
+        android:backgroundTint="#ee1111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
