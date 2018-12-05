@@ -57,7 +57,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
 
     // The current Score
-    private int Score;
+    public int Score;
 
     // The location in the grid of all the segments
     private int[] SnakeXs;
@@ -224,6 +224,9 @@ public class SnakeView extends SurfaceView implements Runnable {
        if (detectDeath()) {
            //start again
            //SoundPool.play(dead_sound, 1, 1, 0, 0, 1);
+           if (Score > MainMenu.highScore ) {
+               MainMenu.highScore = Score;
+           }
            startGame();
        }
     }

@@ -9,7 +9,8 @@ import android.widget.TextView;
 public class MainMenu extends AppCompatActivity {
 
     TextView greetings;
-
+    TextView highScorelabel;
+    public static int highScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,14 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         greetings = (TextView) findViewById(R.id.textView);
         greetings.setText("Hello, " + MainActivity.account.getDisplayName() + "!");
+        highScorelabel = (TextView) findViewById(R.id.textView2);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        highScorelabel.setText("Highscore: " + highScore);
     }
 
     public void playClick(View view) {
