@@ -14,12 +14,13 @@ import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount account = MainActivity.account;
+    GoogleSignInAccount account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        mGoogleSignInClient = MainActivity.mGoogleSignInClient;
     }
 
     public void onClick(View view) {

@@ -57,6 +57,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Hello, player!"
+        android:lines="2"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -66,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="56dp"
         android:text="Highscore:"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"

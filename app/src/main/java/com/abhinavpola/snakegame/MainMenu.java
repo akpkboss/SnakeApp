@@ -6,18 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainMenu extends AppCompatActivity {
 
     TextView greetings;
     TextView highScorelabel;
     public static int highScore;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userRef = database.getReference().child("users").child("name");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         greetings = (TextView) findViewById(R.id.textView);
-        greetings.setText("Hello, " + MainActivity.account.getDisplayName() + "!");
+        greetings.setText("Hello, " + MainActivity.account.getDisplayName() + "!" + "\n" + MainActivity.account.getEmail());
         highScorelabel = (TextView) findViewById(R.id.textView2);
 
     }
