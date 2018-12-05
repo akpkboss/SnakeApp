@@ -1,5 +1,6 @@
 package com.abhinavpola.snakegame;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -19,7 +20,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     private Thread Thread = null;
 
     private volatile boolean Playing;
-
 
     private Canvas Canvas;
 
@@ -221,12 +221,11 @@ public class SnakeView extends SurfaceView implements Runnable {
 
         moveSnake();
 
-        if (detectDeath()) {
-            //start again
-            //SoundPool.play(dead_sound, 1, 1, 0, 0, 1);
-
-            startGame();
-        }
+       if (detectDeath()) {
+           //start again
+           //SoundPool.play(dead_sound, 1, 1, 0, 0, 1);
+           startGame();
+       }
     }
 
     public void drawGame() {
@@ -241,8 +240,8 @@ public class SnakeView extends SurfaceView implements Runnable {
             Paint.setColor(Color.argb(255, 255, 255, 255));
 
             // Choose how big the score will be
-            Paint.setTextSize(30);
-            Canvas.drawText("Score:" + Score, 10, 30, Paint);
+            Paint.setTextSize(50);
+            Canvas.drawText("Score:" + Score, 50, 50, Paint);
 
             //Draw the snake
             for (int i = 0; i < SnakeLength; i++) {

@@ -1,5 +1,6 @@
 package com.abhinavpola.snakegame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Point;
@@ -35,5 +36,6 @@ public class Player extends Activity {
         super.onPause();
         snakeView.pause();
     }
+
 
 }
