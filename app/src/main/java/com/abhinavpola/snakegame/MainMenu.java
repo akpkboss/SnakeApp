@@ -14,8 +14,9 @@ public class MainMenu extends AppCompatActivity {
     TextView greetings;
     TextView highScorelabel;
     public static int highScore;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference().child("users").child("name");
+
+    static DatabaseReference root = FirebaseDatabase.getInstance().getReference();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.Random;
 
 public class SnakeView extends SurfaceView implements Runnable {
+
+    public String name;
+
     private Thread Thread = null;
 
     private volatile boolean Playing;
@@ -227,6 +230,8 @@ public class SnakeView extends SurfaceView implements Runnable {
            if (Score > MainMenu.highScore ) {
                MainMenu.highScore = Score;
            }
+           name = MainActivity.account.getDisplayName();
+           MainMenu.root.child("scores/" + name).push().setValue(Score);
            startGame();
        }
     }

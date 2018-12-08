@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 
     public void signIn(View view) {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i=new Intent(MainActivity.this, MainMenu.class);
             startActivity(i);
         } else {
-            Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
         }
     }
 }
