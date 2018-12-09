@@ -231,7 +231,10 @@ public class SnakeView extends SurfaceView implements Runnable {
                MainMenu.highScore = Score;
            }
            name = MainActivity.account.getDisplayName();
-           MainMenu.root.child("scores/" + name).push().setValue(Score);
+
+           if (Score > MainMenu.currentScore) {
+               MainMenu.root.child(name).setValue(Score);
+           }
            startGame();
        }
     }
