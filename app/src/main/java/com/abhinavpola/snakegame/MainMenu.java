@@ -17,6 +17,7 @@ public class MainMenu extends AppCompatActivity {
 
     TextView greetings;
     TextView highScorelabel;
+    TextView highScorelabel2;
     public static int highScore;
     public static Integer currentScore;
     String name;
@@ -32,16 +33,19 @@ public class MainMenu extends AppCompatActivity {
         greetings = (TextView) findViewById(R.id.textView);
         greetings.setText("Hello, " + name + "!" + "\n" + MainActivity.account.getEmail());
         highScorelabel = (TextView) findViewById(R.id.textView2);
+        highScorelabel2 = (TextView) findViewById(R.id.textView3);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         highScorelabel.setText("Most recent highscore: " + highScore);
+
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentScore = dataSnapshot.child(name).getValue(Integer.class);
+                highScorelabel2.setText("All-time highscore: " + currentScore);
             }
 
             @Override

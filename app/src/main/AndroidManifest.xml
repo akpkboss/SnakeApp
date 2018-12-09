@@ -27,7 +27,7 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".Leaderboard"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Settings"
             android:screenOrientation="landscape" />
