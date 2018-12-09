@@ -180,7 +180,7 @@ public class SnakeView extends SurfaceView implements Runnable {
            }
            name = MainActivity.account.getDisplayName();
 
-           if (Score > MainMenu.currentScore) {
+           if (MainMenu.currentScore == null || Score > MainMenu.currentScore) {
                MainMenu.root.child(name).setValue(Score);
            }
            startGame();

@@ -13,8 +13,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    static DatabaseReference root = FirebaseDatabase.getInstance().getReference();
 
     static GoogleSignInClient mGoogleSignInClient;
     public static GoogleSignInAccount account;
@@ -64,10 +69,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateUI(GoogleSignInAccount account) {
         if (account != null) {
+
             Intent i=new Intent(MainActivity.this, MainMenu.class);
             startActivity(i);
         } else {
             Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
         }
+
     }
 }
