@@ -33,8 +33,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     private final long FPS = 10;
     private final long MILLIS_IN_A_SECOND = 1000;
     public int Score;
-    private int[] SnakeXs;
-    private int[] SnakeYs;
+    private int[] SnakeX;
+    private int[] SnakeY;
     private int SnakeLength;
     private int MouseX;
     private int MouseY;
@@ -61,12 +61,129 @@ public class SnakeView extends SurfaceView implements Runnable {
         Holder = getHolder();
         Paint = new Paint();
 
-        SnakeXs = new int[200];
-        SnakeYs = new int[200];
+        SnakeX = new int[200];
+        SnakeY = new int[200];
 
         startGame();
     }
-    
+    public void drawGame() {
+        // Prepare to draw
+        if (Holder.getSurface().isValid()) {
+            Canvas = Holder.lockCanvas();
+            // Clear the screen with black
+            Canvas.drawColor(Color.argb(255, 29, 29, 29));
+            // Set the color of the paint to draw the snake and mouse with
+            Paint.setColor(Color.argb(255, 250, 128, 114));
+            // Choose how big the score will be
+            Paint.setTextSize(50);
+            Canvas.drawText("Score:" + Score, 50, 50, Paint);
+
+
+            //Draw the snake
+            for (int i = 0; i < SnakeLength; i++) {
+                Canvas.drawRect(SnakeX[i] * BlockSize,
+                        (SnakeY[i] * BlockSize),
+                        (SnakeX[i] * BlockSize) + BlockSize,
+                        (SnakeY[i] * BlockSize) + BlockSize,
+                        Paint);
+            }
+            //draw the mouse
+            Canvas.drawRect(MouseX * BlockSize,
+                    (MouseY * BlockSize),
+                    (MouseX * BlockSize) + BlockSize,
+                    (MouseY * BlockSize) + BlockSize,
+                    Paint);
+            // Draw the whole frame
+            Holder.unlockCanvasAndPost(Canvas);
+        }
+    }
+
+    public void startGame() {
+        SnakeLength = 1;
+        SnakeX[0] = NUBLOCKS_WIDE / 2;
+        SnakeY[0] = NumBlocksHigh / 2;
+        spawnMouse();
+        Score = 0;
+        // Setup NextFrameTime so an update is triggered immediately
+        NextFrameTime = System.currentTimeMillis();
+    }
+
+    public void updateGame() {
+        // check if head of the snake touches the mouse
+        if (SnakeX[0] == MouseX && SnakeY[0] == MouseY) {
+            eatMouse();
+        }
+        moveSnake();
+        if (isDead()) {
+            //start again
+            //SoundPool.play(dead_sound, 1, 1, 0, 0, 1);
+            if (Score > MainMenu.highScore ) {
+                MainMenu.highScore = Score;
+            }
+            name = MainActivity.account.getDisplayName();
+
+            if (MainMenu.currentScore == null || Score > MainMenu.currentScore) {
+                MainMenu.root.child(name).setValue(Score);
+            }
+            startGame();
+        }
+    }
+    public boolean checkForUpdate() {
+        // Should we update the frame
+        if(NextFrameTime <= System.currentTimeMillis()){
+            // Tenth of a second has passed
+            // Setup when the next update will be triggered
+            NextFrameTime =System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
+            return true;
+        }
+        return false;
+    }
+
+    private void moveSnake() {
+        // Move the body
+        for (int i = SnakeLength; i > 0; i--) {
+            // Start at the back and move each position to the position of part in front of it
+            // not including the head of the snake
+            SnakeX[i] = SnakeX[i - 1];
+            SnakeY[i] = SnakeY[i - 1];
+
+        }
+
+        // Move the head
+        switch (direction) {
+            case UP:
+                SnakeY[0]--;
+                break;
+
+            case RIGHT:
+                SnakeX[0]++;
+                break;
+
+            case DOWN:
+                SnakeY[0]++;
+                break;
+
+            case LEFT:
+                SnakeX[0]--;
+                break;
+        }
+    }
+
+
+
+    public void spawnMouse() {
+        Random random = new Random();
+        MouseX = random.nextInt(NUBLOCKS_WIDE - 1) + 1;
+        MouseY = random.nextInt(NumBlocksHigh - 1) + 1;
+    }
+
+    private void eatMouse() {
+        SnakeLength++;
+        spawnMouse();
+        Score = Score + 1;
+    }
+
+
     public void run() {
         // The check for Playing prevents a crash at the start
         // You could also extend the code to provide a pause feature
@@ -95,138 +212,25 @@ public class SnakeView extends SurfaceView implements Runnable {
         Thread.start();
     }
 
-    public void startGame() {
-        // Start with just a head, in the middle of the screen
-        SnakeLength = 1;
-        SnakeXs[0] = NUBLOCKS_WIDE / 2;
-        SnakeYs[0] = NumBlocksHigh / 2;
-        spawnMouse();
-        Score = 0;
-        // Setup NextFrameTime so an update is triggered immediately
-        NextFrameTime = System.currentTimeMillis();
-    }
-
-    public void spawnMouse() {
-        Random random = new Random();
-        MouseX = random.nextInt(NUBLOCKS_WIDE - 1) + 1;
-        MouseY = random.nextInt(NumBlocksHigh - 1) + 1;
-    }
-
-    private void eatMouse() {
-        SnakeLength++;
-        spawnMouse();
-        Score = Score + 1;
-    }
-
-    private void moveSnake() {
-        // Move the body
-        for (int i = SnakeLength; i > 0; i--) {
-            // Start at the back and move each position to the position of part in front of it
-            // not including the head of the snake
-            SnakeXs[i] = SnakeXs[i - 1];
-            SnakeYs[i] = SnakeYs[i - 1];
-
-        }
-
-        // Move the head
-        switch (direction) {
-            case UP:
-                SnakeYs[0]--;
-                break;
-
-            case RIGHT:
-                SnakeXs[0]++;
-                break;
-
-            case DOWN:
-                SnakeYs[0]++;
-                break;
-
-            case LEFT:
-                SnakeXs[0]--;
-                break;
-        }
-    }
-
-    private boolean detectDeath() {
+    private boolean isDead() {
         boolean dead = false;
 
         // Hit a wall
-        if (SnakeXs[0] == -1) dead = true;
-        if (SnakeXs[0] >= NUBLOCKS_WIDE) dead = true;
-        if (SnakeYs[0] == -1) dead = true;
-        if (SnakeYs[0] == NumBlocksHigh) dead = true;
+        if (SnakeX[0] == -1) dead = true;
+        if (SnakeX[0] >= NUBLOCKS_WIDE) dead = true;
+        if (SnakeY[0] == -1) dead = true;
+        if (SnakeY[0] == NumBlocksHigh) dead = true;
 
         // run into itself
         for (int i = SnakeLength - 1; i > 0; i--) {
-            if ((i > 4) && (SnakeXs[0] == SnakeXs[i]) && (SnakeYs[0] == SnakeYs[i])) {
+            if ((i > 4) && (SnakeX[0] == SnakeX[i]) && (SnakeY[0] == SnakeY[i])) {
                 dead = true;
             }
         }
         return dead;
     }
 
-    public void updateGame() {
-        // check if head of the snake touches the mouse
-        if (SnakeXs[0] == MouseX && SnakeYs[0] == MouseY) {
-            eatMouse();
-        }
-        moveSnake();
-        if (detectDeath()) {
-           //start again
-           //SoundPool.play(dead_sound, 1, 1, 0, 0, 1);
-           if (Score > MainMenu.highScore ) {
-               MainMenu.highScore = Score;
-           }
-           name = MainActivity.account.getDisplayName();
 
-           if (MainMenu.currentScore == null || Score > MainMenu.currentScore) {
-               MainMenu.root.child(name).setValue(Score);
-           }
-           startGame();
-       }
-    }
-
-    public void drawGame() {
-        // Prepare to draw
-        if (Holder.getSurface().isValid()) {
-            Canvas = Holder.lockCanvas();
-            // Clear the screen with black
-            Canvas.drawColor(Color.argb(255, 29, 29, 29));
-            // Set the color of the paint to draw the snake and mouse with
-            Paint.setColor(Color.argb(255, 255, 255, 255));
-            // Choose how big the score will be
-            Paint.setTextSize(50);
-            Canvas.drawText("Score:" + Score, 50, 50, Paint);
-            //Draw the snake
-            for (int i = 0; i < SnakeLength; i++) {
-                Canvas.drawRect(SnakeXs[i] * BlockSize,
-                        (SnakeYs[i] * BlockSize),
-                        (SnakeXs[i] * BlockSize) + BlockSize,
-                        (SnakeYs[i] * BlockSize) + BlockSize,
-                        Paint);
-            }
-            //draw the mouse
-            Canvas.drawRect(MouseX * BlockSize,
-                    (MouseY * BlockSize),
-                    (MouseX * BlockSize) + BlockSize,
-                    (MouseY * BlockSize) + BlockSize,
-                    Paint);
-            // Draw the whole frame
-            Holder.unlockCanvasAndPost(Canvas);
-        }
-    }
-
-    public boolean checkForUpdate() {
-        // Should we update the frame
-        if(NextFrameTime <= System.currentTimeMillis()){
-            // Tenth of a second has passed
-            // Setup when the next update will be triggered
-            NextFrameTime =System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {

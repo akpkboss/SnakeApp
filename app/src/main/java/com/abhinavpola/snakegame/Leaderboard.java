@@ -53,7 +53,7 @@ public class Leaderboard extends AppCompatActivity {
     public void displayMap() {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue().toString();
+            String value = entry.getValue().toString();//i think this is the wrong query
             text += "\n" + key + ": " + value + "\n";
         }
         leaders.setText(text);
