@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
+/*
+We used the below link as a guide for some components of this application.
+http://gamecodeschool.com/android/coding-a-snake-game-for-android/
+*/
 
 public class Player extends Activity {
 
