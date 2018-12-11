@@ -24,18 +24,4 @@ public class Player extends Activity {
 
         setContentView(snakeView);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        snakeView.resume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        snakeView.pause();
-    }
-
-
 }
