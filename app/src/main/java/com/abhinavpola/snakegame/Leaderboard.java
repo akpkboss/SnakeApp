@@ -33,7 +33,7 @@ public class Leaderboard extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        root.orderByValue().limitToLast(10).addValueEventListener(new ValueEventListener() {
+        root.limitToLast(10).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 map = new HashMap<>();
